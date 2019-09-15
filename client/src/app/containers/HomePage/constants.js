@@ -8,4 +8,4 @@
  * Follow this format:
  * export const YOUR_ACTION_CONSTANT = 'yourproject/YourContainer/YOUR_ACTION_CONSTANT';
  */
-export const DEFAULT_ACTION = "app/CurrencyPage/DEFAULT_ACTION";
+export const DEFAULT_ACTION = "app/HomePage/DEFAULT_ACTION";

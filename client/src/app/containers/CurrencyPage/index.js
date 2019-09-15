@@ -10,22 +10,25 @@ import {
     makeSelectError,
     makeSelectLoading,
     makeSelectIntervalIsSet,
-    makeSelectConvertedValue, makeSelectCurrencyInput, makeSelectCurrencyIHave, makeSelectCurrencyIWant
+    makeSelectConvertedValue,
+    makeSelectCurrencyInput,
+    makeSelectCurrencyIHave,
+    makeSelectCurrencyIWant, makeSelectFrequencyCountData, makeSelectFrequencyPie,
 } from "./selectors";
 import * as PropTypes from "prop-types";
 import {
     changeCurrencyIHave,
-    changeCurrencyInput, changeCurrencyIWant,
+    changeCurrencyInput, changeCurrencyIWant, savePie,
     setIntervalInfo,
     startConverting,
-    startLoading
+    startLoading,
 } from "./actions";
 import {compose} from 'redux';
 import connect from "react-redux/es/connect/connect";
 import {createStructuredSelector} from "reselect";
-import getAllCurrencies from "../../utils/allCurrencies";
-import CurrencySelect from "../../components/CurrencySelect";
-
+import CurrencySelectWidget from "../CurrencySelectWidget/Loadable";
+import {drawBar, drawPie, prepareDataForChart} from "./service";
+import './bar.css';
 class CurrencyPage extends Component {
     componentDidMount() {
         this.props.getDataFromDb();
@@ -33,6 +36,12 @@ class CurrencyPage extends Component {
             let interval = setInterval(this.getDataFromDb, 1000);
             this.props.setIntervalData(interval);
         }
+        setTimeout(() => {
+            console.log(document.getElementById("pieChart1"));
+            const pie = drawPie(this.props.frequencyCountData, 'pieChart1', 'Most used destionation currency');
+            this.props.saveFrequencyPie(pie);
+            drawBar();
+        }, 2000);
     }
 
     componentWillUnmount() {
@@ -43,69 +52,65 @@ class CurrencyPage extends Component {
     }
 
     render() {
-        const {data, onChangeCurrencyInfo, convertedValue, onChangeCurrencyIHave, onChangeCurrencyIWant} = this.props;
+        const {data, pie, onChangeCurrencyInfo, convertedValue, onChangeCurrencyIHave, onChangeCurrencyIWant, frequencyCountData} = this.props;
+        if (frequencyCountData && pie) {
+            const rows = prepareDataForChart(frequencyCountData);
+            pie.updateProp("data.content", rows);
+        }
         if (data) {
             return (
-                <div className="d-flex" style={{padding: '1em'}}>
-                    <div className="d-flex flex-column" style={{paddingTop: '5rem'}}>
-                        FROM: <div style={{minWidth: '320px'}} className="mb-5">
-                        <CurrencySelect options={getAllCurrencies()}
-                                        onChangeCurrencyIHave={e => onChangeCurrencyIHave(e)}
-                        />
-                    </div>
-                        TO: <div style={{minWidth: '320px'}} >
-                        <CurrencySelect options={getAllCurrencies()}
-                                        onChangeCurrencyIWant={e => onChangeCurrencyIWant(e)}
-                        />
-                    </div>
-                    </div>
-                    <div className="d-flex flex-column" style={{paddingTop: '5rem'}}>
+                <div className="row ml-auto col-md-12 float-left mt-5 pt-5">
+                    <div className="shadow p-4 col-md-12 mainCurrencyConverterSquare">
+                        <div className="d-flex" style={{padding: '1em'}}>
+                            <div className="d-flex flex-column">
+                                FROM: <div style={{minWidth: '320px'}} className="mb-5">
+                                <CurrencySelectWidget onChangeCurrencyIHave={e => onChangeCurrencyIHave(e)}
+                                />
+                            </div>
+                                TO: <div style={{minWidth: '320px'}}>
+                                <CurrencySelectWidget onChangeCurrencyIWant={e => onChangeCurrencyIWant(e)}
+                                />
+                            </div>
+                            </div>
+                            <div className="d-flex flex-column" style={{paddingLeft: '1rem'}}>
+                                <div>
+                                    AMOUNT:
+                                    <input
+                                        type="number"
+                                        onChange={onChangeCurrencyInfo}
+                                        placeholder="Amount"
+                                        style={{width: '200px', height: '38px'}}
+                                        className="form-control"
+                                    />
+                                </div>
+                                <div>
+                                    <button className="btn btn-info btn-lg w-100"
+                                            style={{backgroundColor: '#3f51b5', border: '1px solid #3f51b5'}}
+                                            onClick={() => this.props.convertCurrencyValue()}>
+                                        Convert
+                                    </button>
+                                </div>
 
-                        <div>
-                            AMOUNT:
-                            <input
-                                type="number"
-                                onChange={onChangeCurrencyInfo}
-                                placeholder="Amount"
-                                style={{width: '200px', height: '38px'}}
-                                className="form-control"
-                            />
-                        </div>
-                        <div>
-                            <button className="btn btn-info btn-lg w-100"
-                                    style={{backgroundColor: '#3f51b5', border: '1px solid #3f51b5'}}
-                                    onClick={() => this.props.convertCurrencyValue()}>
-                                Convert
-                            </button>
-                        </div>
+                                <div>
+                                    RESULT:
+                                    <input
+                                        type="number"
+                                        value={convertedValue}
+                                        readOnly
+                                        placeholder="Result"
+                                        style={{width: '200px', height: '38px'}}
+                                        className="form-control"
+                                    />
+                                </div>
 
-                        <div>
-                            RESULT:
-                            <input
-                                type="number"
-                                value={convertedValue}
-                                readOnly
-                                placeholder="Result"
-                                style={{width: '200px', height: '38px'}}
-                                className="form-control"
-                            />
+                            </div>
+                            <div id="pieChart1" className="col-md-4 float-left"/>
                         </div>
+                    </div>
+                    <div id="content">
+                        <div id="chart"></div>
+                    </div>
 
-                    </div>
-                    <div>
-                        <ul>
-                            {data.length <= 0
-                                ? 'NO DB ENTRIES YET'
-                                : data.map((dat) => (
-                                    <li style={{padding: '10px'}} key={Math.random()}>
-                                        <span style={{color: 'gray'}}> id: </span> {dat.id} <br/>
-                                        <span style={{color: 'gray'}}> data: </span>
-                                        {dat.currency}
-                                        {dat.destinationCurrency}
-                                    </li>
-                                ))}
-                        </ul>
-                    </div>
                 </div>
             );
         }
@@ -116,6 +121,8 @@ class CurrencyPage extends Component {
 CurrencyPage.propTypes = {
     loading: PropTypes.bool,
     data: PropTypes.array,
+    frequencyCountData: PropTypes.array,
+    pie: PropTypes.object,
     getDataFromDb: PropTypes.func,
     setIntervalData: PropTypes.func,
     onChangeCurrencyInfo: PropTypes.func,
@@ -131,9 +138,7 @@ function mapDispatchToProps(dispatch) {
         getDataFromDb: () => dispatch(startLoading()),
         setIntervalData: (interval) => dispatch(setIntervalInfo(interval)),
         onChangeCurrencyInfo: (currencyInput) => {
-            console.log(parseFloat(currencyInput.target.value));
             dispatch(changeCurrencyInput(parseFloat(currencyInput.target.value)));
-            dispatch(startLoading());
         },
         convertCurrencyValue: () => {
             dispatch(startConverting());
@@ -145,6 +150,9 @@ function mapDispatchToProps(dispatch) {
         onChangeCurrencyIWant: e => {
             dispatch(changeCurrencyIWant(e.value));
         },
+        saveFrequencyPie: pie => {
+            dispatch(savePie(pie));
+        }
     };
 }
 
@@ -158,6 +166,8 @@ const mapStateToProps = createStructuredSelector({
     convertedValue: makeSelectConvertedValue(),
     currencyIHave: makeSelectCurrencyIHave(),
     currencyIWant: makeSelectCurrencyIWant(),
+    frequencyCountData: makeSelectFrequencyCountData(),
+    pie: makeSelectFrequencyPie(),
 });
 
 const withConnect = connect(

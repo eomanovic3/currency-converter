@@ -27,6 +27,11 @@ const GlobalStyle = createGlobalStyle`
     font-family: Georgia, Times, 'Times New Roman', serif;
     line-height: 1.5em;
   }
+  
+  .mainCurrencyConverterSquare{
+    max-width: 91%;
+    max-height: 55%;
+   }
 `;
 
 export default GlobalStyle;

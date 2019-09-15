@@ -1,12 +1,14 @@
 import {call, put, takeLatest, select} from 'redux-saga/effects';
 import request from '../../utils/request';
-import { START_CONVERTING, START_LOADING} from './constants';
+import {START_CONVERTING, START_LOADING} from './constants';
 import {dataLoaded, errorDataLoading, getConvertedCurrencyValue} from './actions';
+import {countItemFrequency, drawPie, sortData} from "./service";
+
 import {
     makeSelectCurrencyIHave,
     makeSelectCurrencyInput,
     makeSelectCurrencyIWant,
-    makeSelectData,
+    makeSelectData, makeSelectFrequencyCountData,
 } from "./selectors";
 
 export function* getDataFromDb() {
@@ -21,7 +23,10 @@ export function* getDataFromDb() {
                 },
             },
         );
-        yield put(dataLoaded(data.data));
+        console.log(data.data);
+        const sortedData = sortData(data.data);
+        const frequencyCountData = countItemFrequency(sortedData);
+        yield put(dataLoaded(data.data, frequencyCountData));
     } catch (err) {
         yield put(errorDataLoading(err));
     }
@@ -72,11 +77,11 @@ export function* convertCurrencyValue() {
         );
         yield put(getConvertedCurrencyValue(convertedCurrencyValue));
         yield call(getDataFromDb);
-        console.log(convertedCurrencyValue);
     } catch (err) {
         yield put(errorDataLoading(err));
     }
 }
+
 
 // Individual exports for testing
 export default function* currencyPageSaga() {

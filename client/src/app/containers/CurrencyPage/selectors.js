@@ -1,5 +1,3 @@
-
-
 import {createSelector} from 'reselect';
 import {initialState} from './reducer';
 
@@ -57,15 +55,27 @@ const makeSelectCurrencyIWant = () =>
         selectCurrencyPageDomain,
         currencyPage => currencyPage.get('currencyIWant'),
     );
+const makeSelectFrequencyCountData = () =>
+    createSelector(
+        selectCurrencyPageDomain,
+        currencyPage => currencyPage.get('frequencyCountData'),
+    );
+const makeSelectFrequencyPie = () =>
+    createSelector(
+        selectCurrencyPageDomain,
+        currencyPage => currencyPage.get('frequencyPie'),
+    );
 export {
-  selectCurrencyPageDomain,
-  makeSelectLoading,
-  makeSelectError,
-  makeSelectData,
-  makeSelectId,
-  makeSelectIntervalIsSet,
-  makeSelectCurrencyInput,
-  makeSelectConvertedValue,
-  makeSelectCurrencyIHave,
-  makeSelectCurrencyIWant,
+    selectCurrencyPageDomain,
+    makeSelectLoading,
+    makeSelectError,
+    makeSelectData,
+    makeSelectId,
+    makeSelectIntervalIsSet,
+    makeSelectCurrencyInput,
+    makeSelectConvertedValue,
+    makeSelectCurrencyIHave,
+    makeSelectCurrencyIWant,
+    makeSelectFrequencyCountData,
+    makeSelectFrequencyPie,
 };
