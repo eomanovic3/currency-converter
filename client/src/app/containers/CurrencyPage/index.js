@@ -37,10 +37,11 @@ class CurrencyPage extends Component {
             this.props.setIntervalData(interval);
         }
         setTimeout(() => {
-            console.log(document.getElementById("pieChart1"));
-            const pie = drawPie(this.props.frequencyCountData, 'pieChart1', 'Most used destionation currency');
-            this.props.saveFrequencyPie(pie);
-            drawBar();
+            if(this.props.frequencyCountData.length > 0) {
+                const pie = drawPie(this.props.frequencyCountData, 'pieChart1', 'Most used destionation currency');
+                this.props.saveFrequencyPie(pie);
+                drawBar();
+            }
         }, 2000);
     }
 

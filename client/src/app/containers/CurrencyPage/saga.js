@@ -43,7 +43,9 @@ export function* convertCurrencyValue() {
         while (currentIds.includes(idToBeAdded)) {
             ++idToBeAdded;
         }
-
+        console.log(currencyInput);
+        console.log(currencyIHave);
+        console.log(currencyIWant);
         const res = yield call(
             request,
             'https://free.currconv.com/api/v7/convert?q=' + currencyIHave + '_' + currencyIWant +
