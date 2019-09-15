@@ -1,0 +1,42 @@
+{
+  "name": "client",
+  "version": "0.1.0",
+  "private": true,
+  "dependencies": {
+    "axios": "^0.18.1",
+    "bootstrap": "^4.3.1",
+    "connected-react-router": "^6.5.2",
+    "font-awesome": "^4.7.0",
+    "immutable": "^4.0.0-rc.12",
+    "jquery": "^3.4.1",
+    "plop": "^2.4.0",
+    "react": "^16.5.0",
+    "react-dom": "^16.5.0",
+    "react-helmet": "^5.2.1",
+    "react-scripts": "1.1.5"
+  },
+  "scripts": {
+    "start": "react-scripts start",
+    "build": "react-scripts build",
+    "test": "react-scripts test --env=jsdom",
+    "eject": "react-scripts eject",
+    "generate": "plop --plopfile src/internals/generators/index.js",
+    "prettify": "prettier --write"
+  },
+  "proxy": "http://localhost:3001",
+  "eslintConfig": {
+    "extends": "react-app"
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
+  }
+}
