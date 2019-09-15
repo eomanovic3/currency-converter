@@ -1,57 +1,25 @@
-import { createSelector } from 'reselect';
-import { initialState } from './reducer';
+import { createSelector } from "reselect";
+import { initialState } from "./reducer";
 
 /**
- * Direct selector to the homePage state domain
+ * Direct selector to the currency state domain
  */
 
 const selectHomePageDomain = state => state.homePage || initialState;
 
-const makeSelectLoading = () =>
+/**
+ * Other specific selectors
+ */
+
+/**
+ * Default selector used by CurrencyPage
+ */
+
+const makeSelectHomePage = () =>
     createSelector(
         selectHomePageDomain,
-        homePage => homePage.get('loading'),
+        substate => substate
     );
 
-const makeSelectError = () =>
-    createSelector(
-        selectHomePageDomain,
-        homePage => homePage.get('error'),
-    );
-
-const makeSelectData = () =>
-    createSelector(
-        selectHomePageDomain,
-        homePage => homePage.get('data'),
-    );
-
-const makeSelectId = () =>
-    createSelector(
-        selectHomePageDomain,
-        homePage => homePage.get('id'),
-    );
-const makeSelectIntervalIsSet = () =>
-    createSelector(
-        selectHomePageDomain,
-        homePage => homePage.get('intervalIsSet'),
-    );
-const makeSelectCurrencyInput = () =>
-    createSelector(
-        selectHomePageDomain,
-        homePage => homePage.get('currencyInput'),
-    );
-const makeSelectConvertedValue = () =>
-    createSelector(
-        selectHomePageDomain,
-        homePage => homePage.get('convertedValue'),
-    );
-export {
-  selectHomePageDomain,
-  makeSelectLoading,
-  makeSelectError,
-  makeSelectData,
-  makeSelectId,
-  makeSelectIntervalIsSet,
-  makeSelectCurrencyInput,
-  makeSelectConvertedValue,
-};
+export default makeSelectHomePage;
+export { selectHomePageDomain };

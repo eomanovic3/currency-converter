@@ -7,7 +7,6 @@ module.exports = function (app) {
         res.status(200).send("YOU'VE REACHED THE BASE URL OF YOUR API");
     });
 
-    app.use('/api/data', require('./services/dataService'));
     app.use('/api/currencyConversion', require('./services/currencyConversionService'));
 
     // Catch all

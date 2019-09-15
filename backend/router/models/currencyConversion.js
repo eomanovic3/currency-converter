@@ -9,6 +9,7 @@ const CurrencyConversionSchema = new Schema(
         amount: Number,
         currency: String,
         destinationCurrency: String,
+        convertedValue: Number,
     },
     { timestamps: true }
 );

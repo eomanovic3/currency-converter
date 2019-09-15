@@ -25,14 +25,15 @@ router.get('/getAllCurrencyConversions', (req, res) => {
 router.post('/addCurrencyConversion', (req, res) => {
     let data = new CurrencyConversion();
 
-    const { id, amount,  currency, destinationCurrency} = req.body;
+    const { id, amount,  currency, destinationCurrency, convertedValue} = req.body;
 
-    if ((!id && id !== 0) || !message || !currency || !destinationCurrency) {
+    if ((!id && id !== 0) || !amount || !currency || !destinationCurrency || !convertedValue) {
         return res.json({
             success: false,
             error: 'INVALID INPUTS',
         });
     }
+    data.convertedValue = convertedValue;
     data.destinationCurrency = destinationCurrency;
     data.currency = currency;
     data.amount = amount;
@@ -42,28 +43,6 @@ router.post('/addCurrencyConversion', (req, res) => {
         return res.json({ success: true });
     });
 });
-
-//
-// // this is our update method
-// // this method overwrites existing data in our database
-// router.post('/updateData', (req, res) => {
-//     const { id, update } = req.body;
-//     Data.findByIdAndUpdate(id, update, (err) => {
-//         if (err) return res.json({ success: false, error: err });
-//         return res.json({ success: true });
-//     });
-// });
-
-// // this is our delete method
-// // this method removes existing data in our database
-// router.delete('/deleteData', (req, res) => {
-//     const { id } = req.body;
-//     Data.findByIdAndRemove(id, (err) => {
-//         if (err) return res.send(err);
-//         return res.json({ success: true });
-//     });
-// });
-
 
 module.exports = router;
 
