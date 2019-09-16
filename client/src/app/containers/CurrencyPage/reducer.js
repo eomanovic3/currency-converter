@@ -27,8 +27,8 @@ export const initialState = fromJS({
     error: false,
     currencyInput: 0,
     convertedValue: 0,
-    currencyIHave: null,
-    currencyIWant: null,
+    currencyIHave: 'ALL',
+    currencyIWant: 'ALL',
     frequencyPie: null,
 });
 

@@ -27,7 +27,7 @@ import {compose} from 'redux';
 import connect from "react-redux/es/connect/connect";
 import {createStructuredSelector} from "reselect";
 import CurrencySelectWidget from "../CurrencySelectWidget/Loadable";
-import {drawBar, drawPie, prepareDataForChart} from "./service";
+import {drawPie} from "./service";
 import './bar.css';
 class CurrencyPage extends Component {
     componentDidMount() {
@@ -37,10 +37,9 @@ class CurrencyPage extends Component {
             this.props.setIntervalData(interval);
         }
         setTimeout(() => {
-            if(this.props.frequencyCountData.length > 0) {
+            if (this.props.frequencyCountData.length > 0) {
                 const pie = drawPie(this.props.frequencyCountData, 'pieChart1', 'Most used destionation currency');
                 this.props.saveFrequencyPie(pie);
-                drawBar();
             }
         }, 2000);
     }
@@ -54,10 +53,6 @@ class CurrencyPage extends Component {
 
     render() {
         const {data, pie, onChangeCurrencyInfo, convertedValue, onChangeCurrencyIHave, onChangeCurrencyIWant, frequencyCountData} = this.props;
-        if (frequencyCountData && pie) {
-            const rows = prepareDataForChart(frequencyCountData);
-            pie.updateProp("data.content", rows);
-        }
         if (data) {
             return (
                 <div className="row ml-auto col-md-12 float-left mt-5 pt-5">

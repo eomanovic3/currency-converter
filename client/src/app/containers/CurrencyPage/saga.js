@@ -2,13 +2,15 @@ import {call, put, takeLatest, select} from 'redux-saga/effects';
 import request from '../../utils/request';
 import {START_CONVERTING, START_LOADING} from './constants';
 import {dataLoaded, errorDataLoading, getConvertedCurrencyValue} from './actions';
-import {countItemFrequency, drawPie, sortData} from "./service";
+import {countItemFrequency, drawPie, prepareDataForChart, sortData} from "./service";
 
 import {
     makeSelectCurrencyIHave,
     makeSelectCurrencyInput,
     makeSelectCurrencyIWant,
-    makeSelectData, makeSelectFrequencyCountData,
+    makeSelectData,
+    makeSelectFrequencyCountData,
+    makeSelectFrequencyPie,
 } from "./selectors";
 
 export function* getDataFromDb() {
@@ -23,7 +25,6 @@ export function* getDataFromDb() {
                 },
             },
         );
-        console.log(data.data);
         const sortedData = sortData(data.data);
         const frequencyCountData = countItemFrequency(sortedData);
         yield put(dataLoaded(data.data, frequencyCountData));
@@ -43,42 +44,50 @@ export function* convertCurrencyValue() {
         while (currentIds.includes(idToBeAdded)) {
             ++idToBeAdded;
         }
-        console.log(currencyInput);
-        console.log(currencyIHave);
-        console.log(currencyIWant);
-        const res = yield call(
-            request,
-            'https://free.currconv.com/api/v7/convert?q=' + currencyIHave + '_' + currencyIWant +
-            '&compact=ultra&apiKey=a95c822a52bf63e12982',
-            {
-                method: 'GET',
-                headers: {
-                    'Content-Type': 'application/json',
+        if(currencyIWant !== null && currencyIHave !== null && currencyInput !== null) {
+            const res = yield call(
+                request,
+                'https://free.currconv.com/api/v7/convert?q=' + currencyIHave + '_' + currencyIWant +
+                '&compact=ultra&apiKey=a95c822a52bf63e12982',
+                {
+                    method: 'GET',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
                 },
-            },
-        );
+            );
 
-        const convertedCurrencyValue = res[Object.keys(res)[0]] * currencyInput;
-        const body = JSON.stringify({
-            id: idToBeAdded,
-            amount: parseFloat(currencyInput),
-            currency: currencyIHave,
-            destinationCurrency: currencyIWant,
-            convertedValue: parseFloat(convertedCurrencyValue),
-        });
-        yield call(
-            request,
-            'http://localhost:3001/api/currencyConversion/addCurrencyConversion',
-            {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
+            const convertedCurrencyValue = res[Object.keys(res)[0]] * currencyInput;
+            const body = JSON.stringify({
+                id: idToBeAdded,
+                amount: parseFloat(currencyInput),
+                currency: currencyIHave,
+                destinationCurrency: currencyIWant,
+                convertedValue: parseFloat(convertedCurrencyValue),
+            });
+            yield call(
+                request,
+                'http://localhost:3001/api/currencyConversion/addCurrencyConversion',
+                {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: body,
                 },
-                body: body,
-            },
-        );
-        yield put(getConvertedCurrencyValue(convertedCurrencyValue));
-        yield call(getDataFromDb);
+            );
+            yield put(getConvertedCurrencyValue(convertedCurrencyValue));
+            yield call(getDataFromDb);
+            const frequencyCountData = yield select(makeSelectFrequencyCountData());
+            const pie = yield select(makeSelectFrequencyPie());
+
+            const rows = prepareDataForChart(frequencyCountData);
+            setTimeout(() => {
+                pie.updateProp("data.content", rows);
+            }, 3000);
+        }else{
+            yield put(errorDataLoading('Some data is missing!'));
+        }
     } catch (err) {
         yield put(errorDataLoading(err));
     }
