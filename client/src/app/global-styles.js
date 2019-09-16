@@ -30,7 +30,11 @@ const GlobalStyle = createGlobalStyle`
   
   .mainCurrencyConverterSquare{
     max-width: 91%;
-    max-height: 60%;
+    max-height: 33rem;
+   }
+   
+   .mt13rem{
+     min-height: 13rem !important;
    }
 `;
 

@@ -10,8 +10,9 @@ const CurrencyConversionSchema = new Schema(
         currency: String,
         destinationCurrency: String,
         convertedValue: Number,
+        usdValue: Number,
     },
-    { timestamps: true }
+    {timestamps: true}
 );
 
 // export the new Schema so we could modify it using Node.js

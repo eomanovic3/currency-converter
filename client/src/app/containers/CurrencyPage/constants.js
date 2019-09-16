@@ -16,3 +16,4 @@ export const START_CONVERTING = 'boilerplate/CurrencyPage/START_CONVERTING';
 export const CHANGE_CURRENCY_I_HAVE = 'boilerplate/CurrencyPage/CHANGE_CURRENCY_I_HAVE';
 export const CHANGE_CURRENCY_I_WANT = 'boilerplate/CurrencyPage/CHANGE_CURRENCY_I_WANT';
 export const SAVE_PIE = 'boilerplate/CurrencyPage/SAVE_PIE';
+export const SAVE_AMOUNT_PIE = 'boilerplate/CurrencyPage/SAVE_AMOUNT_PIE';

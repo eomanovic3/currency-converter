@@ -14,6 +14,37 @@ export function sortData(dataInfo) {
     return dataInfo;
 }
 
+export function calculateFullAmountInUSD(arr) {
+    const a = [];
+    const b = [];
+    let prev = null;
+
+    for (let i = 0; i < arr.length; i++) {
+        const compare = prev !== null ? prev.destinationCurrency : '';
+        if (arr[i].destinationCurrency !== compare) {
+            debugger;
+            a.push(arr[i].destinationCurrency);
+            b.push(arr[i].usdValue);
+        } else {
+            if (b[b.length - 1]) {
+                b[b.length - 1] = b[b.length - 1] + arr[i].usdValue;
+                console.log( b[b.length - 1]);
+            }
+        }
+        prev = arr[i];
+    }
+    let counter = 0;
+    const fullAmount = [];
+    for (let i = 0; i < b.length; i++) {
+        fullAmount.push({
+            destinationCurrency: a[i],
+            frequency: b[i]
+        });
+        counter = counter + b[i];
+    }
+    return { fullAmount, counter };
+}
+
 
 export function countItemFrequency(arr) {
     const a = [];
@@ -54,16 +85,17 @@ export function prepareDataForChart(frequencyCountData) {
     return rows;
 }
 
-export function drawPie(parsedJSON, divId, title) {
+export function drawPie(parsedJSON, divId, title, type, counter, len) {
     const rows = [];
     for (let i = 0; i < parsedJSON.length; i++) {
         let row = {};
         row['label'] = parsedJSON[i].destinationCurrency;
-        row['value'] = parsedJSON[i].frequency;
+        row['value'] = counter ? Math.round(parsedJSON[i].frequency * 100) / 100 : parsedJSON[i].frequency;
         rows.push(row);
     }
+    const subtitle = counter? `The total amount converted to USD is ${Math.round(counter * 100) / 100}$. Number of requests made : ${len}`: '';
     try {
-        if(rows.length > 0) {
+        if (rows.length > 0) {
             return new d3pie(divId, {
                 "header": {
                     "title": {
@@ -72,9 +104,9 @@ export function drawPie(parsedJSON, divId, title) {
                         "font": "open sans"
                     },
                     "subtitle": {
-                        "text": "",
+                        "text": subtitle,
                         "color": "#999999",
-                        "fontSize": 12,
+                        "fontSize": 18,
                         "font": "open sans"
                     },
                     "titleSubtitlePadding": 9
@@ -92,6 +124,10 @@ export function drawPie(parsedJSON, divId, title) {
                 },
                 "data": {
                     "sortOrder": "value-desc",
+                    "smallSegmentGrouping": {
+                        "enabled": true,
+                        "valueType": "value"
+                    },
                     "content": rows
                 },
                 "labels": {
@@ -99,7 +135,7 @@ export function drawPie(parsedJSON, divId, title) {
                         "pieDistance": 12
                     },
                     "inner": {
-                        "hideWhenLessThanPercentage": 3
+                        "format": type,
                     },
                     "mainLabel": {
                         "fontSize": 14
@@ -131,10 +167,15 @@ export function drawPie(parsedJSON, divId, title) {
                         "enabled": true,
                         "percentage": 100
                     }
-                }
+                },
+                "tooltips": {
+                    "enabled": true,
+                    "type": "placeholder",
+                    "string": "{label}: {value}, {percentage}%"
+                },
             });
         }
-    }catch (e) {
+    } catch (e) {
         console.log(e);
     }
 }

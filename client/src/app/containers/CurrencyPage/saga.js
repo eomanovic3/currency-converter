@@ -1,16 +1,17 @@
 import {call, put, takeLatest, select} from 'redux-saga/effects';
 import request from '../../utils/request';
 import {START_CONVERTING, START_LOADING} from './constants';
-import {dataLoaded, errorDataLoading, getConvertedCurrencyValue} from './actions';
-import {countItemFrequency, drawPie, prepareDataForChart, sortData} from "./service";
+import {dataLoaded, errorDataLoading, getConvertedCurrencyValue, savePie} from './actions';
+import {calculateFullAmountInUSD, countItemFrequency, drawPie, prepareDataForChart, sortData} from "./service";
 
 import {
+    makeSelectAmountPie,
     makeSelectCurrencyIHave,
     makeSelectCurrencyInput,
     makeSelectCurrencyIWant,
     makeSelectData,
     makeSelectFrequencyCountData,
-    makeSelectFrequencyPie,
+    makeSelectFrequencyPie, makeSelectFullAmount,
 } from "./selectors";
 
 export function* getDataFromDb() {
@@ -27,7 +28,8 @@ export function* getDataFromDb() {
         );
         const sortedData = sortData(data.data);
         const frequencyCountData = countItemFrequency(sortedData);
-        yield put(dataLoaded(data.data, frequencyCountData));
+        const { fullAmount, counter } = calculateFullAmountInUSD(sortedData);
+        yield put(dataLoaded(data.data, frequencyCountData, fullAmount, counter));
     } catch (err) {
         yield put(errorDataLoading(err));
     }
@@ -44,11 +46,11 @@ export function* convertCurrencyValue() {
         while (currentIds.includes(idToBeAdded)) {
             ++idToBeAdded;
         }
-        if(currencyIWant !== null && currencyIHave !== null && currencyInput !== null) {
+        if (currencyIWant !== null && currencyIHave !== null && currencyInput !== null) {
             const res = yield call(
                 request,
                 'https://free.currconv.com/api/v7/convert?q=' + currencyIHave + '_' + currencyIWant +
-                '&compact=ultra&apiKey=a95c822a52bf63e12982',
+                '&compact=ultra&apiKey=0c8f6859f6b038079fc1',
                 {
                     method: 'GET',
                     headers: {
@@ -57,13 +59,26 @@ export function* convertCurrencyValue() {
                 },
             );
 
+            const resUSD = yield call(
+                request,
+                'https://free.currconv.com/api/v7/convert?q=' + currencyIHave + '_USD' +
+                '&compact=ultra&apiKey=0c8f6859f6b038079fc1',
+                {
+                    method: 'GET',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                },
+            );
             const convertedCurrencyValue = res[Object.keys(res)[0]] * currencyInput;
+            const usdValueInfo = resUSD[Object.keys(resUSD)[0]] * currencyInput;
             const body = JSON.stringify({
                 id: idToBeAdded,
                 amount: parseFloat(currencyInput),
                 currency: currencyIHave,
                 destinationCurrency: currencyIWant,
                 convertedValue: parseFloat(convertedCurrencyValue),
+                usdValue: parseFloat(usdValueInfo),
             });
             yield call(
                 request,
@@ -84,6 +99,14 @@ export function* convertCurrencyValue() {
             const rows = prepareDataForChart(frequencyCountData);
             setTimeout(() => {
                 pie.updateProp("data.content", rows);
+            }, 3000);
+
+            const amountData = yield select(makeSelectFullAmount());
+            const pieAmount = yield select(makeSelectAmountPie());
+
+            const rowsAmount = prepareDataForChart(amountData);
+            setTimeout(() => {
+                pieAmount.updateProp("data.content", rowsAmount);
             }, 3000);
         }else{
             yield put(errorDataLoading('Some data is missing!'));

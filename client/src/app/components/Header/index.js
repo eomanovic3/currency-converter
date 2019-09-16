@@ -25,7 +25,7 @@ function Header() {
                       Currency Converter</h1></div>
           </header>
           <nav className="open" id="navbarId">
-            <div className="ui blue fluid vertical labeled icon menu" id="navItems">
+            <div className="ui blue fluid vertical labeled icon menu mt13rem" id="navItems">
               <Link id="dashboard" className="nav-link activeClass item"
                  aria-selected="true" aria-controls="dashboard" to="/">
                 <i aria-hidden="true" className="fa fa-newspaper-o icon"/>

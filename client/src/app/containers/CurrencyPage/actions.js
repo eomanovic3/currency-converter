@@ -14,7 +14,7 @@ import {
   CONVERT_VALUE,
   START_CONVERTING,
   CHANGE_CURRENCY_I_HAVE,
-  CHANGE_CURRENCY_I_WANT, SAVE_PIE
+  CHANGE_CURRENCY_I_WANT, SAVE_PIE, SAVE_AMOUNT_PIE
 } from './constants';
 
 export function startLoading() {
@@ -23,11 +23,13 @@ export function startLoading() {
   };
 }
 
-export function dataLoaded(data, frequencyCountData) {
+export function dataLoaded(data, frequencyCountData, fullAmount, counter) {
   return {
     type: DATA_LOADED,
     data,
     frequencyCountData,
+    fullAmount,
+    counter,
   };
 }
 
@@ -83,5 +85,12 @@ export function savePie(frequencyPie) {
   return {
     type: SAVE_PIE,
     frequencyPie,
+  };
+}
+
+export function saveAmountPieInfo(amountPie) {
+  return {
+    type: SAVE_AMOUNT_PIE,
+    amountPie,
   };
 }

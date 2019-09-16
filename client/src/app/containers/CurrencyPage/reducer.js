@@ -10,7 +10,7 @@ import {
     CHANGE_CURRENCY_INPUT,
     CONVERT_VALUE,
     DATA_LOAD_ERROR,
-    DATA_LOADED, SAVE_PIE,
+    DATA_LOADED, SAVE_AMOUNT_PIE, SAVE_PIE,
     SET_INTERVAL_DATA, START_CONVERTING, START_LOADING
 } from "./constants";
 
@@ -30,6 +30,9 @@ export const initialState = fromJS({
     currencyIHave: 'ALL',
     currencyIWant: 'ALL',
     frequencyPie: null,
+    fullAmount: null,
+    counter : null,
+    amountPie: null,
 });
 
 function currencyReducer(state = initialState, action) {
@@ -40,6 +43,8 @@ function currencyReducer(state = initialState, action) {
             return state
                 .set('data', action.data)
                 .set('frequencyCountData', action.frequencyCountData)
+                .set('fullAmount', action.fullAmount)
+                .set('counter', action.counter)
                 .set('loading', false)
                 .set('error', false);
         case SET_INTERVAL_DATA:
@@ -63,6 +68,8 @@ function currencyReducer(state = initialState, action) {
             return state.set('loading', true).set('error', false);
         case SAVE_PIE:
             return state.set('frequencyPie', action.frequencyPie);
+        case SAVE_AMOUNT_PIE:
+            return state.set('amountPie', action.amountPie);
         default:
             return state;
     }

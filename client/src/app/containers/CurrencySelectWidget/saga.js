@@ -9,7 +9,7 @@ export function* getAllCurrencies() {
     try {
         // const data = yield call(
         //     request,
-        //     'https://free.currconv.com/api/v7/currencies?apiKey=a95c822a52bf63e12982',
+        //     'https://free.currconv.com/api/v7/currencies?apiKey=0c8f6859f6b038079fc1',
         //     {
         //         method: 'GET',
         //         headers: {

@@ -25,9 +25,9 @@ router.get('/getAllCurrencyConversions', (req, res) => {
 router.post('/addCurrencyConversion', (req, res) => {
     let data = new CurrencyConversion();
 
-    const { id, amount,  currency, destinationCurrency, convertedValue} = req.body;
+    const { id, amount,  usdValue, currency, destinationCurrency, convertedValue} = req.body;
 
-    if ((!id && id !== 0) || !amount || !currency || !destinationCurrency || !convertedValue) {
+    if ((!id && id !== 0) || !amount || !currency || !destinationCurrency || !convertedValue || !usdValue) {
         return res.json({
             success: false,
             error: 'INVALID INPUTS',
@@ -35,6 +35,7 @@ router.post('/addCurrencyConversion', (req, res) => {
     }
     data.convertedValue = convertedValue;
     data.destinationCurrency = destinationCurrency;
+    data.usdValue = usdValue;
     data.currency = currency;
     data.amount = amount;
     data.id = id;

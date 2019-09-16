@@ -65,6 +65,21 @@ const makeSelectFrequencyPie = () =>
         selectCurrencyPageDomain,
         currencyPage => currencyPage.get('frequencyPie'),
     );
+const makeSelectFullAmount = () =>
+    createSelector(
+        selectCurrencyPageDomain,
+        currencyPage => currencyPage.get('fullAmount'),
+    );
+const makeSelectCounter = () =>
+    createSelector(
+        selectCurrencyPageDomain,
+        currencyPage => currencyPage.get('counter'),
+    );
+const makeSelectAmountPie = () =>
+    createSelector(
+        selectCurrencyPageDomain,
+        currencyPage => currencyPage.get('amountPie'),
+    );
 export {
     selectCurrencyPageDomain,
     makeSelectLoading,
@@ -78,4 +93,7 @@ export {
     makeSelectCurrencyIWant,
     makeSelectFrequencyCountData,
     makeSelectFrequencyPie,
+    makeSelectFullAmount,
+    makeSelectCounter,
+    makeSelectAmountPie,
 };

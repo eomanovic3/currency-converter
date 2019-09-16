@@ -13,22 +13,34 @@ import {
     makeSelectConvertedValue,
     makeSelectCurrencyInput,
     makeSelectCurrencyIHave,
-    makeSelectCurrencyIWant, makeSelectFrequencyCountData, makeSelectFrequencyPie,
+    makeSelectCurrencyIWant,
+    makeSelectFrequencyCountData,
+    makeSelectFrequencyPie,
+    makeSelectFullAmount,
+    makeSelectCounter,
 } from "./selectors";
 import * as PropTypes from "prop-types";
 import {
     changeCurrencyIHave,
-    changeCurrencyInput, changeCurrencyIWant, savePie,
+    changeCurrencyInput, changeCurrencyIWant,
+    saveAmountPieInfo, savePie,
     setIntervalInfo,
     startConverting,
     startLoading,
 } from "./actions";
+import styled from 'styled-components';
 import {compose} from 'redux';
 import connect from "react-redux/es/connect/connect";
 import {createStructuredSelector} from "reselect";
 import CurrencySelectWidget from "../CurrencySelectWidget/Loadable";
 import {drawPie} from "./service";
-import './bar.css';
+
+const InfoH = styled.div`
+    font-size: 18px;
+    font-family: "open sans";
+    color: rgb(153, 153, 153);
+`;
+
 class CurrencyPage extends Component {
     componentDidMount() {
         this.props.getDataFromDb();
@@ -38,8 +50,12 @@ class CurrencyPage extends Component {
         }
         setTimeout(() => {
             if (this.props.frequencyCountData.length > 0) {
-                const pie = drawPie(this.props.frequencyCountData, 'pieChart1', 'Most used destionation currency');
+                const pie = drawPie(this.props.frequencyCountData, 'pieChart1', 'Most used destination currency', 'percentage', null, null);
                 this.props.saveFrequencyPie(pie);
+            }
+            if (this.props.fullAmount.length > 0) {
+                const pie = drawPie(this.props.fullAmount, 'pieChart2', 'Full amount inserted', 'value', this.props.counter, this.props.data.length);
+                this.props.saveAmountPie(pie);
             }
         }, 2000);
     }
@@ -52,12 +68,13 @@ class CurrencyPage extends Component {
     }
 
     render() {
-        const {data, pie, onChangeCurrencyInfo, convertedValue, onChangeCurrencyIHave, onChangeCurrencyIWant, frequencyCountData} = this.props;
+        const {dat, pie, onChangeCurrencyInfo, convertedValue, onChangeCurrencyIHave, onChangeCurrencyIWant, counter, frequencyCountData} = this.props;
+
         if (data) {
             return (
                 <div className="row ml-auto col-md-12 float-left mt-5 pt-5">
-                    <div className="shadow p-4 col-md-12 mainCurrencyConverterSquare">
-                        <div className="d-flex" style={{padding: '1em'}}>
+                    <div className="shadow p-4 col-md-12 mainCurrencyConverterSquare d-flex">
+                        <div className="d-flex" style={{padding: '1em', paddingLeft: '5rem'}}>
                             <div className="d-flex flex-column">
                                 FROM: <div style={{minWidth: '320px'}} className="mb-5">
                                 <CurrencySelectWidget onChangeCurrencyIHave={e => onChangeCurrencyIHave(e)}
@@ -103,10 +120,22 @@ class CurrencyPage extends Component {
                             <div id="pieChart1" className="col-md-4 float-left"/>
                         </div>
                     </div>
-                    <div id="content">
-                        <div id="chart"></div>
+                    <div className="shadow p-4 col-md-12 mainCurrencyConverterSquare d-flex justify-content-between">
+                        <div className="d-flex flex-column">
+                            <div className="shadow w-100 h-100 text-center">
+                                <div id="pieChart2" className="col-md-4"/>
+                            </div>
+                        </div>
+                        <div className="d-flex flex-column float-right w-100 align-items-md-center">
+                            <div className="shadow w-100 h-100 text-center" style={{padding: '10% 0% 10% 0%'}}>
+                                <InfoH>Emina Omanovic</InfoH>
+                                <InfoH>Year 2019</InfoH>
+                                <img className="w-50 pt-3" style={{ height: '230px'}}
+                                     src="https://cdn2.iconfinder.com/data/icons/payments/512/yen_coin_payment-512.png"
+                                     alt="Converter"/>
+                            </div>
+                        </div>
                     </div>
-
                 </div>
             );
         }
@@ -118,6 +147,7 @@ CurrencyPage.propTypes = {
     loading: PropTypes.bool,
     data: PropTypes.array,
     frequencyCountData: PropTypes.array,
+    fullAmount: PropTypes.array,
     pie: PropTypes.object,
     getDataFromDb: PropTypes.func,
     setIntervalData: PropTypes.func,
@@ -125,6 +155,7 @@ CurrencyPage.propTypes = {
     convertCurrencyValue: PropTypes.func,
     convertedValue: PropTypes.number,
     currencyInput: PropTypes.number,
+    counter: PropTypes.number,
     currencyIHave: PropTypes.string,
     currencyIWant: PropTypes.string,
 };
@@ -148,6 +179,9 @@ function mapDispatchToProps(dispatch) {
         },
         saveFrequencyPie: pie => {
             dispatch(savePie(pie));
+        },
+        saveAmountPie: pie => {
+            dispatch(saveAmountPieInfo(pie));
         }
     };
 }
@@ -164,6 +198,8 @@ const mapStateToProps = createStructuredSelector({
     currencyIWant: makeSelectCurrencyIWant(),
     frequencyCountData: makeSelectFrequencyCountData(),
     pie: makeSelectFrequencyPie(),
+    fullAmount: makeSelectFullAmount(),
+    counter: makeSelectCounter(),
 });
 
 const withConnect = connect(

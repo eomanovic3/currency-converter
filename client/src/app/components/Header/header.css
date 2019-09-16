@@ -37,7 +37,7 @@ nav.closed {
 }
 
 nav .menu {
-    min-height: 100vh !important;
+    min-height: 120vh !important;
     border: none !important;
     border-radius: 0 !important;
 }
@@ -18090,7 +18090,7 @@ nav.closed {
 }
 
 nav .menu {
-    min-height: 100vh !important;
+    min-height: 120vh !important;
     border: none !important;
     border-radius: 0 !important
 }
