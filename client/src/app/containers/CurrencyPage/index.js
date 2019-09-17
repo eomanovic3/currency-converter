@@ -64,7 +64,6 @@ class CurrencyPage extends Component {
         }
         setTimeout(() => {
             const {frequencyCountData, fullAmount, counter, data} = this.props;
-            console.log(counter);
             let validFrequencyCountData = [{destinationCurrency: 'Unknown', frequency: 100}];
             if (frequencyCountData && frequencyCountData.length > 0) {
                 validFrequencyCountData = frequencyCountData;

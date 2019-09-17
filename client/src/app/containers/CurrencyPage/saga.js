@@ -111,7 +111,6 @@ export function* convertCurrencyValue() {
             setTimeout(() => {
                 pieAmount.updateProp("data.content", rowsAmount);
                 pieAmount.updateProp("header.subtitle.text",subtitle);
-                console.log(pieAmount);
             }, 3000);
         } else {
             yield put(errorDataLoading('Some data is missing!'));

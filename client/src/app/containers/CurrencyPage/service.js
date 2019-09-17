@@ -28,7 +28,6 @@ export function calculateFullAmountInUSD(arr) {
         } else {
             if (b[b.length - 1]) {
                 b[b.length - 1] = b[b.length - 1] + arr[i].usdValue;
-                console.log( b[b.length - 1]);
             }
         }
         prev = arr[i];
