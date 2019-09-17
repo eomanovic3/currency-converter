@@ -1,7 +1,7 @@
 # currency-converter
-#Requirements
+## Requirements
 
-Used Node.js for backend, React JS with Redux for frontend, MongoDB - database cluster.
+#### Used Node.js for backend, React JS with Redux for frontend, MongoDB - database cluster.
 
 ## Done 
  #### For backend use Node.js with any common framework (express, hapi, koa and serverless are all recommended) . 
@@ -15,7 +15,7 @@ Used Node.js for backend, React JS with Redux for frontend, MongoDB - database c
  #### 3. Total number of conversion requests made
  #### Do not use locally installed database. You can use local file, free version of some cloud database or any other method.
 
-## Not Done - In the begging phase
+## Not Done - In the process.
  #### Make sure the stats are not cleared on restart and are aggregate for all visitors. This means they have to be calculated and stored in the backend.
 
 
