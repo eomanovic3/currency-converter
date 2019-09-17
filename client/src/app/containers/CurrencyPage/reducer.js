@@ -4,7 +4,7 @@
  *
  */
 
-import { fromJS } from 'immutable';
+import {fromJS} from 'immutable';
 import {
     CHANGE_CURRENCY_I_HAVE, CHANGE_CURRENCY_I_WANT,
     CHANGE_CURRENCY_INPUT,
@@ -31,7 +31,7 @@ export const initialState = fromJS({
     currencyIWant: 'ALL',
     frequencyPie: null,
     fullAmount: null,
-    counter : null,
+    counter: null,
     amountPie: null,
 });
 

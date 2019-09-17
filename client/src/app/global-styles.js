@@ -1,4 +1,4 @@
-import { createGlobalStyle } from 'styled-components';
+import {createGlobalStyle} from 'styled-components';
 
 const GlobalStyle = createGlobalStyle`
   html,
@@ -30,7 +30,20 @@ const GlobalStyle = createGlobalStyle`
   
   .mainCurrencyConverterSquare{
     max-width: 91%;
-    max-height: 33rem;
+    max-height: 100%;
+    height: fit-content;
+    min-height:16rem;
+   }
+   
+   .secondCurrencyConverterSquare{
+    max-width: 91%;
+    max-height: 100%;
+    height: fit-content;
+    min-height:30rem;
+   }
+   
+   .fitContentHeight{
+    height: fit-content;
    }
    
    .mt13rem{

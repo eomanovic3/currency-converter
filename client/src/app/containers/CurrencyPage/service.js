@@ -74,12 +74,12 @@ export function countItemFrequency(arr) {
     return frequencyArray;
 }
 
-export function prepareDataForChart(frequencyCountData) {
+export function prepareDataForChart(frequencyCountData, counter) {
     const rows = [];
     for (let i = 0; i < frequencyCountData.length; i++) {
         let row = {};
         row['label'] = frequencyCountData[i].destinationCurrency;
-        row['value'] = frequencyCountData[i].frequency;
+        row['value'] = counter ? Math.round(frequencyCountData[i].frequency * 100) / 100 : frequencyCountData[i].frequency;
         rows.push(row);
     }
     return rows;
@@ -126,6 +126,7 @@ export function drawPie(parsedJSON, divId, title, type, counter, len) {
                     "sortOrder": "value-desc",
                     "smallSegmentGrouping": {
                         "enabled": true,
+                        "value": 0,
                         "valueType": "value"
                     },
                     "content": rows

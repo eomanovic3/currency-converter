@@ -6,6 +6,7 @@ import {calculateFullAmountInUSD, countItemFrequency, drawPie, prepareDataForCha
 
 import {
     makeSelectAmountPie,
+    makeSelectCounter,
     makeSelectCurrencyIHave,
     makeSelectCurrencyInput,
     makeSelectCurrencyIWant,
@@ -28,7 +29,7 @@ export function* getDataFromDb() {
         );
         const sortedData = sortData(data.data);
         const frequencyCountData = countItemFrequency(sortedData);
-        const { fullAmount, counter } = calculateFullAmountInUSD(sortedData);
+        const {fullAmount, counter} = calculateFullAmountInUSD(sortedData);
         yield put(dataLoaded(data.data, frequencyCountData, fullAmount, counter));
     } catch (err) {
         yield put(errorDataLoading(err));
@@ -36,7 +37,7 @@ export function* getDataFromDb() {
 }
 export function* convertCurrencyValue() {
     try {
-        const data = yield select(makeSelectData());
+        let data = yield select(makeSelectData());
         const currencyInput = yield select(makeSelectCurrencyInput());
         const currencyIHave = yield select(makeSelectCurrencyIHave());
         const currencyIWant = yield select(makeSelectCurrencyIWant());
@@ -95,6 +96,7 @@ export function* convertCurrencyValue() {
             yield call(getDataFromDb);
             const frequencyCountData = yield select(makeSelectFrequencyCountData());
             const pie = yield select(makeSelectFrequencyPie());
+            const counter = yield select(makeSelectCounter());
 
             const rows = prepareDataForChart(frequencyCountData);
             setTimeout(() => {
@@ -103,12 +105,15 @@ export function* convertCurrencyValue() {
 
             const amountData = yield select(makeSelectFullAmount());
             const pieAmount = yield select(makeSelectAmountPie());
-
-            const rowsAmount = prepareDataForChart(amountData);
+            data = yield select(makeSelectData());
+            const rowsAmount = prepareDataForChart(amountData, counter);
+            const subtitle = counter ? `The total amount converted to USD is ${Math.round(counter * 100) / 100}$. Number of requests made : ${data.length}` : '';
             setTimeout(() => {
                 pieAmount.updateProp("data.content", rowsAmount);
+                pieAmount.updateProp("header.subtitle.text",subtitle);
+                console.log(pieAmount);
             }, 3000);
-        }else{
+        } else {
             yield put(errorDataLoading('Some data is missing!'));
         }
     } catch (err) {

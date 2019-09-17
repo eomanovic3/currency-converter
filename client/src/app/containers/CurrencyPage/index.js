@@ -35,28 +35,50 @@ import {createStructuredSelector} from "reselect";
 import CurrencySelectWidget from "../CurrencySelectWidget/Loadable";
 import {drawPie} from "./service";
 
-const InfoH = styled.div`
-    font-size: 18px;
-    font-family: "open sans";
-    color: rgb(153, 153, 153);
+const ConvertButton = styled.button`
+    font-size: 16px;
+    font-weight: bold;
+    background-color: #3f51b5;
+    border: 1px solid #3f51b5;
+    width: 300px;
+    height: 35px;
 `;
-
+const ResultInput = styled.input`
+    width: 400px;
+    height: 38px;
+    font-weight: 500;
+`;
+const LoaderImage = styled.img`
+   width: 150px !important;
+`;
+const PieDiv = styled.div`
+  visibility: ${props => (props.frequencyCountDataExist === false ? 'hidden' : 'unset')};
+`;
 class CurrencyPage extends Component {
     componentDidMount() {
+        const { intervalIsSet} = this.props;
         this.props.getDataFromDb();
-        if (!this.props.intervalIsSet) {
+        if (!intervalIsSet) {
             let interval = setInterval(this.getDataFromDb, 1000);
             this.props.setIntervalData(interval);
         }
         setTimeout(() => {
-            if (this.props.frequencyCountData.length > 0) {
-                const pie = drawPie(this.props.frequencyCountData, 'pieChart1', 'Most used destination currency', 'percentage', null, null);
-                this.props.saveFrequencyPie(pie);
+            const {frequencyCountData, fullAmount, counter, data} = this.props;
+            console.log(counter);
+            let validFrequencyCountData = [{destinationCurrency: 'Unknown', frequency: 100}];
+            if (frequencyCountData && frequencyCountData.length > 0) {
+                validFrequencyCountData = frequencyCountData;
             }
-            if (this.props.fullAmount.length > 0) {
-                const pie = drawPie(this.props.fullAmount, 'pieChart2', 'Full amount inserted', 'value', this.props.counter, this.props.data.length);
-                this.props.saveAmountPie(pie);
+            const frequencyPie = drawPie(validFrequencyCountData, 'pieChart1', 'Most used destination currency', 'percentage', null, null);
+            this.props.saveFrequencyPie(frequencyPie);
+
+            let validFullAmountData = [{destinationCurrency: 'Unknown', frequency: 100}];
+            if (fullAmount && fullAmount.length > 0) {
+                validFullAmountData = fullAmount;
             }
+            const amountPie = drawPie(validFullAmountData, 'pieChart2', 'Full amount inserted', 'value', counter, data ? data.length : 0);
+            this.props.saveAmountPie(amountPie);
+
         }, 2000);
     }
 
@@ -68,74 +90,70 @@ class CurrencyPage extends Component {
     }
 
     render() {
-        const {dat, pie, onChangeCurrencyInfo, convertedValue, onChangeCurrencyIHave, onChangeCurrencyIWant, counter, frequencyCountData} = this.props;
-
+        const {data, onChangeCurrencyInfo, convertedValue, onChangeCurrencyIHave, onChangeCurrencyIWant, counter, frequencyCountData} = this.props;
+        const frequencyCountDataExist = frequencyCountData && frequencyCountData.length > 0;
         if (data) {
             return (
-                <div className="row ml-auto col-md-12 float-left mt-5 pt-5">
-                    <div className="shadow p-4 col-md-12 mainCurrencyConverterSquare d-flex">
+                <div className="row ml-auto col-md-12 float-left mt-5 pt-5 fitContentHeight">
+                    <div className="shadow p-4 col-md-12 mainCurrencyConverterSquare d-flex flex-column">
                         <div className="d-flex" style={{padding: '1em', paddingLeft: '5rem'}}>
                             <div className="d-flex flex-column">
-                                FROM: <div style={{minWidth: '320px'}} className="mb-5">
-                                <CurrencySelectWidget onChangeCurrencyIHave={e => onChangeCurrencyIHave(e)}
-                                />
-                            </div>
-                                TO: <div style={{minWidth: '320px'}}>
-                                <CurrencySelectWidget onChangeCurrencyIWant={e => onChangeCurrencyIWant(e)}
-                                />
-                            </div>
-                            </div>
-                            <div className="d-flex flex-column" style={{paddingLeft: '1rem'}}>
-                                <div>
+                                <div className="pl-2">
+                                    FROM: <div style={{minWidth: '400px'}} className="mb-2">
+                                    <CurrencySelectWidget onChangeCurrencyIHave={e => onChangeCurrencyIHave(e)}
+                                    /></div>
+                                </div>
+                                <div className="pl-2">
                                     AMOUNT:
-                                    <input
+                                    <ResultInput
                                         type="number"
                                         onChange={onChangeCurrencyInfo}
                                         placeholder="Amount"
-                                        style={{width: '200px', height: '38px'}}
-                                        className="form-control"
+                                        className="form-control pl-2"
                                     />
                                 </div>
-                                <div>
-                                    <button className="btn btn-info btn-lg w-100"
-                                            style={{backgroundColor: '#3f51b5', border: '1px solid #3f51b5'}}
-                                            onClick={() => this.props.convertCurrencyValue()}>
-                                        Convert
-                                    </button>
+                            </div>
+                            <div className="d-flex flex-column">
+                                <div className="pl-2">
+                                    TO: <div style={{minWidth: '400px'}} className="mb-2">
+                                    <CurrencySelectWidget onChangeCurrencyIWant={e => onChangeCurrencyIWant(e)}
+                                    /></div>
                                 </div>
-
-                                <div>
+                                <div className="pl-2">
                                     RESULT:
-                                    <input
+                                    <ResultInput
                                         type="number"
                                         value={convertedValue}
                                         readOnly
                                         placeholder="Result"
-                                        style={{width: '200px', height: '38px'}}
                                         className="form-control"
                                     />
                                 </div>
-
                             </div>
-                            <div id="pieChart1" className="col-md-4 float-left"/>
+                            <div className="d-flex flex-column" style={{paddingLeft: '1rem'}}>
+
+                                <div>
+                                    <ConvertButton className="btn btn-primary mt-4"
+                                                   onClick={() => this.props.convertCurrencyValue()}>
+                                        Convert
+                                    </ConvertButton>
+                                </div>
+                            </div>
                         </div>
                     </div>
-                    <div className="shadow p-4 col-md-12 mainCurrencyConverterSquare d-flex justify-content-between">
+                     <PieDiv frequencyCountDataExist={frequencyCountDataExist}
+                        className="shadow p-4 col-md-12 secondCurrencyConverterSquare d-flex justify-content-between">
                         <div className="d-flex flex-column">
-                            <div className="shadow w-100 h-100 text-center">
+                            <div className="w-100 h-100 text-center">
                                 <div id="pieChart2" className="col-md-4"/>
                             </div>
                         </div>
                         <div className="d-flex flex-column float-right w-100 align-items-md-center">
-                            <div className="shadow w-100 h-100 text-center" style={{padding: '10% 0% 10% 0%'}}>
-                                <InfoH>Emina Omanovic</InfoH>
-                                <InfoH>Year 2019</InfoH>
-                                <img className="w-50 pt-3" style={{ height: '230px'}}
-                                     src="https://cdn2.iconfinder.com/data/icons/payments/512/yen_coin_payment-512.png"
-                                     alt="Converter"/>
+                            <div className="w-100 h-100 text-center">
+                                <div id="pieChart1" className="col-md-4 float-left"/>
                             </div>
                         </div>
-                    </div>
+                    </PieDiv>
                 </div>
             );
         }
