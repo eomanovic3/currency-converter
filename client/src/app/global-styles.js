@@ -49,6 +49,10 @@ const GlobalStyle = createGlobalStyle`
    .mt13rem{
      min-height: 13rem !important;
    }
+    .loginButton{
+        background-color: #3f51b5;
+        border: 1px solid #3f51b5;
+    }
 `;
 
 export default GlobalStyle;

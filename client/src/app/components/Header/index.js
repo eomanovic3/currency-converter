@@ -26,14 +26,14 @@ function Header() {
           </header>
           <nav className="open" id="navbarId">
             <div className="ui blue fluid vertical labeled icon menu mt13rem" id="navItems">
-              <Link id="dashboard" className="nav-link activeClass item"
+              <Link id="dashboard" className="nav-link item"
                  aria-selected="true" aria-controls="dashboard" to="/">
                 <i aria-hidden="true" className="fa fa-newspaper-o icon"/>
                 Dashboard</Link>
               <Link id="dashboard" className="nav-link item"
-                    aria-selected="true" aria-controls="dashboard" to="/features">
+                    aria-selected="true" aria-controls="dashboard" to="/login">
                 <i aria-hidden="true" className="fa fa-user-o icon"/>
-                Account</Link>
+                Login</Link>
             </div>
           </nav>
       </div>

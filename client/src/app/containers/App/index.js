@@ -12,7 +12,8 @@ import styled from 'styled-components';
 import { Switch, Route } from 'react-router-dom';
 
 import HomePage from '../../containers/HomePage/Loadable';
-import CurrencyPage from '../../containers/CurrencyPage/Loadable';
+import Login from '../../containers/Login/Loadable';
+import Register from '../../containers/Register/Loadable';
 import NotFoundPage from '../../containers/NotFoundPage/Loadable';
 
 import GlobalStyle from '../../global-styles';
@@ -36,7 +37,8 @@ export default function App() {
       <Header />
       <Switch>
         <Route exact path="/" component={HomePage} />
-        <Route path="/features" component={CurrencyPage} />
+        <Route path="/login" component={Login} />
+          <Route path="/register" component={Register} />
         <Route path="" component={NotFoundPage} />
       </Switch>
       <GlobalStyle />

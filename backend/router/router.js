@@ -8,6 +8,7 @@ module.exports = function (app) {
     });
 
     app.use('/api/currencyConversion', require('./services/currencyConversionService'));
+    app.use('/api/users', require('./services/userService'));
 
     // Catch all
     app.use('*', function (req, res, next){

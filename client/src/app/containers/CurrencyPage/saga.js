@@ -17,6 +17,24 @@ import {
 
 export function* getDataFromDb() {
     try {
+        const body = JSON.stringify({
+            name: 'emi11sssnaddad',
+            email: 'emaidsxxdds888dds11ld@email.com',
+            password: 'e1ss77dddddxx1eede',
+        });
+
+        const res123 = yield call(
+            request,'http://localhost:3001/api/users/user',
+            {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: body,
+            },
+        );
+        console.log(res123);
+
         const data = yield call(
             request,
             'http://localhost:3001/api/currencyConversion/getAllCurrencyConversions',
@@ -50,7 +68,7 @@ export function* convertCurrencyValue() {
         if (currencyIWant !== null && currencyIHave !== null && currencyInput !== null) {
             const res = yield call(
                 request,
-                'https://free.currconv.com/api/v7/convert?q=' + currencyIHave + '_' + currencyIWant +
+                'https://free.currconv.com/api/v77/convert?q=' + currencyIHave + '_' + currencyIWant +
                 '&compact=ultra&apiKey=0c8f6859f6b038079fc1',
                 {
                     method: 'GET',
@@ -62,7 +80,7 @@ export function* convertCurrencyValue() {
 
             const resUSD = yield call(
                 request,
-                'https://free.currconv.com/api/v7/convert?q=' + currencyIHave + '_USD' +
+                'https://free.currconv.com/api/v77/convert?q=' + currencyIHave + '_USD' +
                 '&compact=ultra&apiKey=0c8f6859f6b038079fc1',
                 {
                     method: 'GET',
