@@ -48,3 +48,16 @@ https://openexchangerates.org
 https://currencylayer.com
 http://fixer.io
 Used https://www.currencyconverterapi.com/docs API.
+
+
+Steps to run the code
+
+1. npm install
+2. cd backend
+  3. npm install
+  4. node server.js
+3. cd ..
+4. cd client
+  5. npm install
+  6. npm start
+7. cd ..
