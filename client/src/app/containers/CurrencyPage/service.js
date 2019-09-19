@@ -1,5 +1,4 @@
 import * as d3pie from "d3pie";
-import * as d3 from "d3";
 
 export function sortData(dataInfo) {
     dataInfo.sort((a, b) => {

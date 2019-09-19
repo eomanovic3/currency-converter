@@ -17,9 +17,7 @@ import Register from '../../containers/Register/Loadable';
 import NotFoundPage from '../../containers/NotFoundPage/Loadable';
 
 import GlobalStyle from '../../global-styles';
-import Header from "../../components/Header";
 import Logout from "../../components/Logout";
-import history from '../../utils/history';
 const AppWrapper = styled.div`
   margin: 0 auto;
   display: flex;

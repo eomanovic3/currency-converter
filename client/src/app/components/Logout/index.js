@@ -4,7 +4,6 @@
  *
  */
 
-import React from "react";
 import CookiesWrapper from "../../utils/cookiesWrapper";
 import history from '../../utils/history';
 

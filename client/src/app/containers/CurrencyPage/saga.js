@@ -1,9 +1,8 @@
 import {call, put, takeLatest, select} from 'redux-saga/effects';
 import request from '../../utils/request';
 import {START_CONVERTING, START_LOADING} from './constants';
-import {dataLoaded, errorDataLoading, getConvertedCurrencyValue, savePie} from './actions';
-import {calculateFullAmountInUSD, countItemFrequency, drawPie, prepareDataForChart, sortData} from "./service";
-import CookiesWrapper from '../../utils/cookiesWrapper';
+import {dataLoaded, errorDataLoading, getConvertedCurrencyValue} from './actions';
+import {calculateFullAmountInUSD, countItemFrequency, prepareDataForChart, sortData} from "./service";
 
 import {
     makeSelectAmountPie,

@@ -43,17 +43,17 @@ const ConvertButton = styled.button`
     width: 300px;
     height: 35px;
 `;
+
 const ResultInput = styled.input`
     width: 400px;
     height: 38px;
     font-weight: 500;
 `;
-const LoaderImage = styled.img`
-   width: 150px !important;
-`;
+
 const PieDiv = styled.div`
   visibility: ${props => (props.frequencyCountDataExist === false ? 'hidden' : 'unset')};
 `;
+
 class CurrencyPage extends Component {
     componentDidMount() {
         const { intervalIsSet} = this.props;
