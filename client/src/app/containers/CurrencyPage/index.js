@@ -2,6 +2,7 @@
 import React, {Component} from 'react';
 import reducer from './reducer';
 import saga from './saga';
+import history from '../../utils/history';
 import injectSaga from '../../utils/injectSaga';
 import injectReducer from '../../utils/injectReducer';
 import {
@@ -34,6 +35,7 @@ import connect from "react-redux/es/connect/connect";
 import {createStructuredSelector} from "reselect";
 import CurrencySelectWidget from "../CurrencySelectWidget/Loadable";
 import {drawPie} from "./service";
+import CookiesWrapper from "../../utils/cookiesWrapper";
 
 const ConvertButton = styled.button`
     font-size: 16px;
@@ -56,6 +58,9 @@ const PieDiv = styled.div`
 
 class CurrencyPage extends Component {
     componentDidMount() {
+        if(!CookiesWrapper.getCookie('x-auth-token')) {
+            history.push('/login');
+        }
         const { intervalIsSet} = this.props;
         this.props.getDataFromDb();
         if (!intervalIsSet) {
