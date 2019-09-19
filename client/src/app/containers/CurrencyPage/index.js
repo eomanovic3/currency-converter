@@ -89,7 +89,7 @@ class CurrencyPage extends Component {
     }
 
     render() {
-        const {data, onChangeCurrencyInfo, convertedValue, onChangeCurrencyIHave, onChangeCurrencyIWant, counter, frequencyCountData} = this.props;
+        const {data, onChangeCurrencyInfo, convertedValue, onChangeCurrencyIHave, onChangeCurrencyIWant, frequencyCountData} = this.props;
         const frequencyCountDataExist = frequencyCountData && frequencyCountData.length > 0;
         if (data) {
             return (

@@ -8,23 +8,25 @@ import {compose} from 'redux';
 import connect from "react-redux/es/connect/connect";
 import {createStructuredSelector} from "reselect";
 import Currency from "../CurrencyPage/Loadable";
+import Header from "../../components/Header";
 
 class HomePage extends Component {
 
     render() {
-        return <Currency  />;
+        return <div className="d-flex">
+            <Header/>
+            <Currency/>
+        </div>
     }
 }
 
-HomePage.propTypes = {
-};
+HomePage.propTypes = {};
 
 function mapDispatchToProps(dispatch) {
     return {};
 }
 
-const mapStateToProps = createStructuredSelector({
-});
+const mapStateToProps = createStructuredSelector({});
 
 const withConnect = connect(
     mapStateToProps,

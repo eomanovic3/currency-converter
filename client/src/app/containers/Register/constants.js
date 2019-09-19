@@ -4,4 +4,4 @@
  *
  */
 
-export const DEFAULT_ACTION = "app/Register/DEFAULT_ACTION";
+export const USER_REGISTRATION = "app/Register/USER_REGISTRATION";

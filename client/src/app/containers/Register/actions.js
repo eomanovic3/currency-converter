@@ -4,10 +4,13 @@
  *
  */
 
-import { DEFAULT_ACTION } from "./constants";
+import {USER_REGISTRATION} from "./constants";
 
-export function defaultAction() {
+export function sendUserRegistration(name, email, password) {
   return {
-    type: DEFAULT_ACTION
+    type: USER_REGISTRATION,
+    name,
+    email,
+    password
   };
 }

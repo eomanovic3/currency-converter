@@ -1,9 +1,20 @@
 const auth = require("../auth");
 const bcrypt = require("bcrypt");
-
-const { User, validate } = require("../models/user");
+const {User, validate} = require("../models/user");
 const express = require("express");
 const router = express.Router();
+
+
+router.post("/login", async (req, res) => {
+    let user = await User.findOne({ email: req.body.email });
+    if(user){
+        const token = user.generateAuthToken();
+        res.send({
+            token: token,
+        });
+    }
+    return res.status(400).send("Bad credentials");
+});
 
 router.get("/current", auth, async (req, res) => {
     const user = await User.findById(req.user._id).select("-password");
@@ -28,11 +39,11 @@ router.post("/user", async (req, res) => {
     await user.save();
 
     const token = user.generateAuthToken();
+
     res.header("x-auth-token", token).send({
-        _id: user._id,
-        name: user.name,
-        email: user.email
+        token: token,
     });
 });
+
 
 module.exports = router;

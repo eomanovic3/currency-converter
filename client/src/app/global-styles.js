@@ -53,6 +53,10 @@ const GlobalStyle = createGlobalStyle`
         background-color: #3f51b5;
         border: 1px solid #3f51b5;
     }
+    
+    .formMargins{
+       margin:15% 0% 0% 35% !important
+    }
 `;
 
 export default GlobalStyle;

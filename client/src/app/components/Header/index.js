@@ -6,40 +6,58 @@
 
 import React from "react";
 import {Link} from "react-router-dom";
-// import PropTypes from 'prop-types';
-// import styled from 'styled-components';
 import 'font-awesome/css/font-awesome.min.css';
 import 'font-awesome/css/font-awesome.css';
 import './header.css';
-function Header() {
-  return(
-      <div>
-          <header className="fixed-top">
-              <div className="ui header">
-                  <div className="logo">
-                      <span style={{ fontSize: '2.0em', color: 'white'}}>
-                          <i className="fa fa-usd"></i>
-                        </span>
-                  </div>
-                  <h1 className="content font-weight-bold" style={{ marginLeft: '-13px', fontSize: '2rem', fontFamily: 'sans-serif'}}>
-                      Currency Converter</h1></div>
-          </header>
-          <nav className="open" id="navbarId">
-            <div className="ui blue fluid vertical labeled icon menu mt13rem" id="navItems">
-              <Link id="dashboard" className="nav-link item"
-                 aria-selected="true" aria-controls="dashboard" to="/">
-                <i aria-hidden="true" className="fa fa-newspaper-o icon"/>
-                Dashboard</Link>
-              <Link id="dashboard" className="nav-link item"
-                    aria-selected="true" aria-controls="dashboard" to="/login">
-                <i aria-hidden="true" className="fa fa-user-o icon"/>
-                Login</Link>
+import styled from "styled-components";
+
+const CurrencyConverterTitle = styled.h1`
+    margin-left: -13px;
+    font-size: 2rem;
+    font-family: sans-serif;
+`;
+const DollarIcon = styled.span`
+    font-size: 2.0em;
+    color: white;
+`;
+
+class Header extends React.PureComponent {
+    render() {
+        return (
+            <div>
+                <header className="fixed-top">
+                    <div className="ui header">
+                        <div className="logo">
+                            <DollarIcon>
+                                <i className="fa fa-usd"/>
+                            </DollarIcon>
+                        </div>
+                        <CurrencyConverterTitle className="content font-weight-bold">
+                            Currency Converter
+                        </CurrencyConverterTitle>
+                    </div>
+                </header>
+                <nav className="open" id="navbarId">
+                    <div className="ui blue fluid vertical labeled icon menu mt13rem" id="navItems">
+                        <Link className="nav-link item"
+                              aria-selected="true" aria-controls="dashboard" to="/">
+                            <i aria-hidden="true" className="fa fa-newspaper-o icon"/>
+                            Dashboard
+                        </Link>
+                        <Link className="nav-link item"
+                              aria-selected="true" aria-controls="dashboard" to="/logout">
+                            <i aria-hidden="true" className="fa fa-user-o icon"/>
+                            Logout
+                        </Link>
+                    </div>
+                </nav>
             </div>
-          </nav>
-      </div>
-  );
+        );
+    }
 }
 
 Header.propTypes = {};
 
 export default Header;
+
+

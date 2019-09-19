@@ -18,7 +18,8 @@ import NotFoundPage from '../../containers/NotFoundPage/Loadable';
 
 import GlobalStyle from '../../global-styles';
 import Header from "../../components/Header";
-
+import Logout from "../../components/Logout";
+import history from '../../utils/history';
 const AppWrapper = styled.div`
   margin: 0 auto;
   display: flex;
@@ -34,10 +35,10 @@ export default function App() {
       >
         <meta name="description" content="A React.js Boilerplate application" />
       </Helmet>
-      <Header />
       <Switch>
-        <Route exact path="/" component={HomePage} />
-        <Route path="/login" component={Login} />
+          <Route exact path="/" component={HomePage} />
+          <Route path="/login" component={Login}/>
+          <Route path="/logout" component={Logout}/>
           <Route path="/register" component={Register} />
         <Route path="" component={NotFoundPage} />
       </Switch>
