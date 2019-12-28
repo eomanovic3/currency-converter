@@ -15,23 +15,19 @@ Its goal is to convert your currency.
 
 .. contents::
 
-Main features
+Description
 =============
 
-
-* Expressive and intuitive syntax
-* User friendly interface
-* Linux, macOS and Windows support
-* Documentation
-* Test coverage
+* Expressive and intuitive syntax is used.
 * API is based on REST.
-* In the backend, an external API for currency rates is used - https://www.currencyconverterapi.com/.
-* The app is also displaying the following stats:
+* An external API for currency rates is used - https://www.currencyconverterapi.com/.
+* ES6+ is used.
+* Code is separated into several modules.
+
+* The app is displaying the following stats:
 *   1. Most popular destination currency
 *   2. Total amount converted (in USD)
 *   3. Total number of conversion requests made
-* ES6+ is used.
-* Code is separated into several modules.
 
 
 Prerequisites
