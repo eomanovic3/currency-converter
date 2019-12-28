@@ -15,23 +15,44 @@ Its goal is to convert your currency.
 
 .. contents::
 
-####  API is based on REST.
-#### In the backend, an external API for currency rates is used - https://www.currencyconverterapi.com/.
-#### The app is also displaying the following stats:
-####  1. Most popular destination currency
-####  2. Total amount converted (in USD)
-####  3. Total number of conversion requests made
-#### ES6+ is used.
-#### Code is separated into several modules. 
+Main features
+=============
 
-Steps to run the code
 
-#### 1. npm install
-#### 2. cd backend
-####   3. npm install
-####   4. node server.js
-#### 3. cd ..
-#### 4. cd client
-####   5. npm install
-####   6. npm start
-#### 7. cd ..
+* Expressive and intuitive syntax
+* User friendly interface
+* Linux, macOS and Windows support
+* Documentation
+* Test coverage
+* API is based on REST.
+* In the backend, an external API for currency rates is used - https://www.currencyconverterapi.com/.
+* The app is also displaying the following stats:
+*   1. Most popular destination currency
+*   2. Total amount converted (in USD)
+*   3. Total number of conversion requests made
+* ES6+ is used.
+* Code is separated into several modules.
+
+
+Prerequisites
+============
+1. Git
+2. Node: any 8.x version starting with 8.4.0 or greater
+3. A clone of the https://github.com/eomanovic3/currency-converter repo on your local machine.
+
+
+Installation and Running
+========================
+
+.. code-block:: bash
+
+    $ npm install
+    $ cd backend
+    $ npm install
+    $ node server.js
+    $ cd ..
+    $ cd client
+    $ npm install
+    $ npm start
+    $ cd ..
+    $ npm star
