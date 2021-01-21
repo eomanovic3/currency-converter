@@ -19,7 +19,7 @@
     "d3pie": "^0.2.1",
     "fontfaceobserver": "^2.1.0",
     "history": "^4.10.1",
-    "immer": "^4.0.0",
+    "immer": "^8.0.1",
     "intl": "^1.2.5",
     "jquery": "^3.4.1",
     "js-cookie": "^2.2.1",
