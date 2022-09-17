@@ -15,7 +15,7 @@
     "react": "^16.5.0",
     "react-dom": "^16.5.0",
     "react-helmet": "^5.2.1",
-    "react-scripts": "1.1.5",
+    "react-scripts": "5.0.1",
     "universal-cookie": "^4.0.2"
   },
   "scripts": {
